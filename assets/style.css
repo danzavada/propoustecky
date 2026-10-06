@@ -53,7 +53,7 @@ body {
 }
 
 .site-header { border-bottom: 1px solid var(--border); padding: 12px 0; }
-.site-footer { border-top: 1px solid var(--border); padding: 10px 0; color: var(--muted); font-size: 0.85rem; }
+.site-footer { padding: 0 0 10px; color: var(--muted); font-size: 0.75rem; text-align: right; }
 .site-footer p { margin: 0; }
 
 .header-row {
@@ -69,7 +69,7 @@ body {
 .muted { color: var(--muted); font-weight: 400; }
 
 /* Okna končí kousek nad spodním okrajem stránky. */
-main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 32px; min-height: 0; }
+main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 24px; min-height: 0; }
 
 .panes {
   flex: 1;
@@ -135,16 +135,39 @@ button {
 
 .btn-primary { background: var(--accent); color: var(--accent-fg); border: 1px solid var(--accent); font-weight: 600; }
 .btn-primary:disabled { opacity: 0.45; cursor: default; }
+/* Výběr ve stejném stylu jako tlačítko Vymazat, s vlastní šipkou. */
+.select { position: relative; display: inline-flex; }
+.select::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -5px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
 select {
+  appearance: none;
+  -webkit-appearance: none;
   height: 32px;
-  padding: 0 8px;
+  padding: 0 32px 0 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: var(--bg);
+  background: transparent;
   color: var(--fg);
   font: inherit;
   font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
 }
+select:hover { background: var(--surface); }
+select:focus-visible { outline: 2px solid var(--accent); outline-offset: -1px; }
+select option { background: var(--bg); color: var(--fg); }
 
 .btn-ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--surface); }

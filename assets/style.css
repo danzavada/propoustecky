@@ -53,8 +53,6 @@ body {
 }
 
 .site-header { border-bottom: 1px solid var(--border); padding: 12px 0; }
-.site-footer { padding: 0 0 10px; color: var(--muted); font-size: 0.75rem; text-align: right; }
-.site-footer p { margin: 0; }
 
 .header-row {
   display: flex;
@@ -69,7 +67,7 @@ body {
 .muted { color: var(--muted); font-weight: 400; }
 
 /* Okna končí kousek nad spodním okrajem stránky. */
-main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 24px; min-height: 0; }
+main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 20px; min-height: 0; }
 
 .panes {
   flex: 1;
@@ -186,7 +184,7 @@ select option { background: var(--bg); color: var(--fg); }
 @media (max-width: 800px) {
   html, body { height: auto; }
   body { overflow: auto; }
-  main.container { padding-bottom: 24px; }
+  main.container { padding-bottom: 16px; }
   .pane-head { height: auto; min-height: 64px; flex-wrap: wrap; padding: 8px 0; }
   .panes { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
   textarea, .output { flex: none; height: 50vh; }

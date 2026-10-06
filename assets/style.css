@@ -30,6 +30,8 @@
 
 html, body { height: 100%; }
 
+body { overflow: hidden; }
+
 body {
   margin: 0;
   display: flex;
@@ -61,12 +63,14 @@ body {
 .privacy { color: var(--muted); font-size: 0.85rem; }
 .muted { color: var(--muted); font-weight: 400; }
 
-main { flex: 1; display: flex; padding-top: 16px; padding-bottom: 16px; min-height: 0; }
+/* Okna končí kousek nad spodním okrajem stránky. */
+main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 40px; min-height: 0; }
 
 .panes {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: 16px;
   min-height: 0;
 }
@@ -78,8 +82,7 @@ main { flex: 1; display: flex; padding-top: 16px; padding-bottom: 16px; min-heig
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 8px;
-  height: 36px;
+  height: 64px; /* tlačítka svisle uprostřed mezi hlavičkou a okny */
 }
 
 .pane-title { font-weight: 600; line-height: 1; }
@@ -89,23 +92,21 @@ textarea,
 .output {
   flex: 1;
   width: 100%;
-  min-height: 420px;
+  min-height: 0;
   resize: none;
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
   color: var(--fg);
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13px;
+  font-family: inherit;
+  font-size: 14px;
   line-height: 1.5;
 }
 
 #input { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
 .output {
   overflow-y: auto;
-  font-family: inherit;
-  font-size: 14px;
   user-select: text;
 }
 .output p { margin: 0 0 1em; }
@@ -144,6 +145,9 @@ button {
 .warnings p { margin: 0; }
 
 @media (max-width: 800px) {
-  .panes { grid-template-columns: 1fr; }
-  textarea, .output { min-height: 260px; }
+  html, body { height: auto; }
+  body { overflow: auto; }
+  main.container { padding-bottom: 24px; }
+  .panes { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  textarea, .output { flex: none; height: 50vh; }
 }

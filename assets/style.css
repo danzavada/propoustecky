@@ -48,8 +48,6 @@ body {
 }
 
 .site-header { border-bottom: 1px solid var(--border); padding: 12px 0; }
-.site-footer { border-top: 1px solid var(--border); padding: 8px 0; color: var(--muted); font-size: 0.85rem; }
-.site-footer p { margin: 0; }
 
 .header-row {
   display: flex;
@@ -81,13 +79,14 @@ main { flex: 1; display: flex; padding-top: 16px; padding-bottom: 16px; min-heig
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 8px;
-  min-height: 34px;
+  height: 36px;
 }
 
-.pane-head label { font-weight: 600; }
-.actions { display: flex; gap: 8px; }
+.pane-title { font-weight: 600; line-height: 1; }
+.actions { display: flex; align-items: center; gap: 8px; }
 
-textarea {
+textarea,
+.output {
   flex: 1;
   width: 100%;
   min-height: 420px;
@@ -103,14 +102,27 @@ textarea {
 }
 
 #input { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-#output { font-family: inherit; font-size: 14px; }
+.output {
+  overflow-y: auto;
+  font-family: inherit;
+  font-size: 14px;
+  user-select: text;
+}
+.output p { margin: 0 0 1em; }
+.output p:last-child { margin-bottom: 0; }
+.output:empty::before { content: attr(data-placeholder); color: var(--muted); }
 
 textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
 
 button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
   font: inherit;
   font-size: 0.9rem;
-  padding: 6px 14px;
+  line-height: 1;
+  padding: 0 14px;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -133,5 +145,5 @@ button {
 
 @media (max-width: 800px) {
   .panes { grid-template-columns: 1fr; }
-  textarea { min-height: 260px; }
+  textarea, .output { min-height: 260px; }
 }

@@ -250,45 +250,45 @@
     return o.num + '. ' + o.name + (o.quantity ? ' ' + o.quantity : '');
   }
 
+  // Nález jako nadpis + řádky. Kmeny i citlivost jsou každý na svém řádku.
   function formatReport(r) {
-    var organisms = {};
-    r.sections.forEach(function (s) {
-      // V citlivosti stačí název kmene bez doplňků za čárkou (např. ESBL).
-      s.items.forEach(function (it) { if (it.num) organisms[it.num] = it.name.split(',')[0]; });
-    });
-
     var columns = r.sensitivity ? r.sensitivity.columns : [];
     var withResults = columns.filter(function (c) { return c.results.length; });
-    var title = formatMaterial(r.material) + ' – kultivace' +
-      (withResults.length ? ' a citlivost' : '');
     var date = formatDate(r.date);
-    var parts = [];
+    var title = formatMaterial(r.material) + ' - kultivace' +
+      (withResults.length ? ' a citlivost' : '') + (date ? ' ' + date : '');
+    var lines = [];
 
     r.sections.forEach(function (s) {
       var items = s.items.filter(function (it) {
         return !(it.text && /^viz primokultur/i.test(it.text));
       });
       if (!items.length) return;
-      var body = items.map(function (it) {
-        return it.num ? organismText(it) : it.text.charAt(0).toLocaleLowerCase('cs') + it.text.slice(1);
-      }).join(', ');
-      parts.push((s.title ? sentenceCase(s.title) + ': ' : '') + body + '.');
+      var label = s.title ? sentenceCase(s.title) + ':' : '';
+      if (items.some(function (it) { return it.num; })) {
+        if (label) lines.push(label);
+        items.forEach(function (it) { lines.push(it.num ? organismText(it) : it.text); });
+      } else {
+        var body = items.map(function (it) { return it.text; }).join(', ');
+        if (label) body = label + ' ' + body.charAt(0).toLocaleLowerCase('cs') + body.slice(1);
+        lines.push(body);
+      }
     });
 
     if (withResults.length) {
-      var sens = withResults.map(function (c) {
-        var label = c.num + '. ' + (organisms[c.num] || 'kmen');
-        return label + ': ' + c.results.map(function (x) { return x.drug + ' ' + x.code; }).join(', ');
-      }).join('; ');
-      parts.push('Citlivost ' + sens + '.');
+      lines.push('Citlivost:');
+      withResults.forEach(function (c) {
+        lines.push(c.num + '. ' + c.results.map(function (x) { return x.drug + ' ' + x.code; }).join(', '));
+      });
     }
 
-    return title + (date ? ' ' + date : '') + ': ' + (parts.join(' ') || 'bez výsledku.');
+    if (!lines.length) lines.push('bez výsledku');
+    return { title: title, lines: lines };
   }
 
   function convert(text) {
     var reports = splitReports(text || '').map(parseReport);
-    if (!reports.length) return { text: '', count: 0, warnings: [] };
+    if (!reports.length) return { blocks: [], legend: '', text: '', count: 0, warnings: [] };
 
     var warnings = reports.filter(function (r) {
       return r.sensitivity && r.sensitivity.uncertain;
@@ -297,12 +297,21 @@
         ': citlivost nešlo spolehlivě přiřadit ke kmenům, zkontroluj ji s originálem.';
     });
 
-    var out = reports.map(formatReport);
+    var blocks = reports.map(formatReport);
     var legendSource = reports.filter(function (r) {
       return r.legend && r.sensitivity && r.sensitivity.columns.some(function (c) { return c.results.length; });
     })[0];
-    if (legendSource) out.push('Legenda: ' + legendSource.legend);
-    return { text: out.join('\n\n'), count: reports.length, warnings: warnings };
+    var legend = legendSource ? 'Legenda: ' + legendSource.legend : '';
+
+    var paragraphs = blocks.map(function (b) { return [b.title].concat(b.lines).join('\n'); });
+    if (legend) paragraphs.push(legend);
+    return {
+      blocks: blocks,
+      legend: legend,
+      text: paragraphs.join('\n\n'),
+      count: reports.length,
+      warnings: warnings
+    };
   }
 
   var api = { convert: convert, parseReport: parseReport, splitReports: splitReports };

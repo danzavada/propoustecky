@@ -6,19 +6,36 @@
   var count = document.getElementById('count');
   var warnings = document.getElementById('warnings');
   var copyBtn = document.getElementById('copy');
+  var current = null;
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  // Stejné HTML se zobrazí na stránce i vloží do schránky.
+  function toHtml(result) {
+    var parts = result.blocks.map(function (b) {
+      return '<p><b>' + escapeHtml(b.title) + '</b><br>' +
+        b.lines.map(escapeHtml).join('<br>') + '</p>';
+    });
+    if (result.legend) parts.push('<p>' + escapeHtml(result.legend) + '</p>');
+    return parts.join('');
+  }
 
   function render() {
-    var result = VfnFormatter.convert(input.value);
-    output.value = result.text;
-    copyBtn.disabled = !result.text;
+    current = VfnFormatter.convert(input.value);
+    output.innerHTML = toHtml(current);
+    copyBtn.disabled = !current.text;
 
     if (!input.value.trim()) count.textContent = '';
-    else if (!result.count) count.textContent = '(žádný nález nerozpoznán)';
-    else count.textContent = '(' + result.count + ' ' + plural(result.count) + ')';
+    else if (!current.count) count.textContent = '(žádný nález nerozpoznán)';
+    else count.textContent = '(' + current.count + ' ' + plural(current.count) + ')';
 
-    warnings.hidden = !result.warnings.length;
+    warnings.hidden = !current.warnings.length;
     warnings.textContent = '';
-    result.warnings.forEach(function (w) {
+    current.warnings.forEach(function (w) {
       var p = document.createElement('p');
       p.textContent = w;
       warnings.appendChild(p);
@@ -39,26 +56,30 @@
     input.focus();
   });
 
-  document.getElementById('sample').addEventListener('click', function () {
-    fetch('samples/priklad.txt')
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-      .then(function (text) { input.value = text; render(); })
-      .catch(function () { count.textContent = '(ukázku se nepodařilo načíst)'; });
-  });
-
+  // Do schránky jde HTML (tučné nadpisy) i čistý text pro programy bez formátování.
   copyBtn.addEventListener('click', function () {
     var done = function () {
       copyBtn.textContent = 'Zkopírováno';
       setTimeout(function () { copyBtn.textContent = 'Kopírovat'; }, 1500);
     };
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(output.value).then(done, fallback);
+    var html = '<div>' + toHtml(current) + '</div>';
+    if (navigator.clipboard && window.ClipboardItem && window.isSecureContext) {
+      navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([current.text], { type: 'text/plain' })
+      })]).then(done, fallback);
     } else {
       fallback();
     }
     function fallback() {
-      output.select();
+      var onCopy = function (e) {
+        e.clipboardData.setData('text/html', html);
+        e.clipboardData.setData('text/plain', current.text);
+        e.preventDefault();
+      };
+      document.addEventListener('copy', onCopy);
       document.execCommand('copy');
+      document.removeEventListener('copy', onCopy);
       done();
     }
   });

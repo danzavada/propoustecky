@@ -18,26 +18,38 @@ test('rozpozná všechny nálezy a přidá jednu legendu na konec', () => {
 
 test('negativní kultivace', () => {
   assert.strictEqual(paragraphs(sample)[0],
-    'Moč z perman. katetru – kultivace 7.9.2026: Primokultura: negativní.');
+    'Moč z perman. katetru - kultivace 7.9.2026\nPrimokultura: negativní');
 });
 
 test('vynechá „viz primokultura“', () => {
   assert.strictEqual(paragraphs(sample)[3],
-    'Výtěr z rekta – kultivace 7.9.2026: Primokultura: běžná střevní flóra.');
+    'Výtěr z rekta - kultivace 7.9.2026\nPrimokultura: běžná střevní flóra');
 });
 
-test('citlivost jen u testovaného kmene', () => {
-  assert.strictEqual(paragraphs(sample)[5],
-    'Permanentní močový katetr – kultivace a citlivost 17.9.2026: ' +
-    'Primokultura: 1. Staphylococcus epidermidis ojediněle, 2. Enterococcus faecalis ojediněle. ' +
-    'Pomnožení: 3. Proteus hauseri. ' +
-    'Citlivost 3. Proteus hauseri: amoxicilin klavulanát C, amikacin C, ampicilin R, ciprofloxacin C, ' +
-    'kotrimoxazol C, cefuroxim R, furantoin R, gentamicin C, pivmecilinam R.');
+test('kmeny pod sebou, citlivost jen u testovaného kmene', () => {
+  assert.strictEqual(paragraphs(sample)[5], [
+    'Permanentní močový katetr - kultivace a citlivost 17.9.2026',
+    'Primokultura:',
+    '1. Staphylococcus epidermidis ojediněle',
+    '2. Enterococcus faecalis ojediněle',
+    'Pomnožení:',
+    '3. Proteus hauseri',
+    'Citlivost:',
+    '3. amoxicilin klavulanát C, amikacin C, ampicilin R, ciprofloxacin C, ' +
+      'kotrimoxazol C, cefuroxim R, furantoin R, gentamicin C, pivmecilinam R'
+  ].join('\n'));
 });
 
 test('citlivost u dvou kmenů', () => {
-  const p = paragraphs(sample)[7];
-  assert.match(p, /Citlivost 1\. Citrobacter koseri: amoxicilin klavulanát R, .*pivmecilinam C; 2\. Proteus hauseri: amoxicilin klavulanát C, .*pivmecilinam R\.$/);
+  const lines = paragraphs(sample)[7].split('\n');
+  assert.strictEqual(lines[0], 'Uretra - kultivace a citlivost 19.9.2026');
+  assert.strictEqual(lines[4], 'Citlivost:');
+  assert.match(lines[5], /^1\. amoxicilin klavulanát R, .*pivmecilinam C$/);
+  assert.match(lines[6], /^2\. amoxicilin klavulanát C, .*pivmecilinam R$/);
+});
+
+test('bez dlouhých pomlček', () => {
+  assert.doesNotMatch(convert(sample).text, /[–—]/);
 });
 
 test('výsledek nezávisí na slitých mezerách, odsazení ani koncích řádků', () => {
@@ -49,11 +61,13 @@ test('výsledek nezávisí na slitých mezerách, odsazení ani koncích řádk�
 
 test('chybějící hodnota v tabulce: podle pozice, se slitými mezerami varování', () => {
   const gap = sample.replace(' gentamicin                  C   C', ' gentamicin                      C');
-  assert.match(paragraphs(gap)[7], /Proteus hauseri: [^;]*gentamicin C/);
+  const lines = paragraphs(gap)[7].split('\n');
+  assert.doesNotMatch(lines[5], /gentamicin/);
+  assert.match(lines[6], /gentamicin C/);
   assert.deepStrictEqual(convert(gap).warnings, []);
   assert.strictEqual(convert(gap.replace(/[ \t]+/g, ' ')).warnings.length, 1);
 });
 
 test('prázdný vstup', () => {
-  assert.deepStrictEqual(convert(''), { text: '', count: 0, warnings: [] });
+  assert.deepStrictEqual(convert(''), { blocks: [], legend: '', text: '', count: 0, warnings: [] });
 });

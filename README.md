@@ -3,9 +3,14 @@
 Webová aplikace, která převádí mikrobiologické nálezy zkopírované z NIS VFN
 do stručného textu, např.:
 
-> Výtěr z nosu – kultivace a citlivost 7.9.2026: Primokultura: 1. Staphylococcus
-> aureus ojediněle. Citlivost 1. Staphylococcus aureus: oxacilin C.
+> **Výtěr z nosu - kultivace a citlivost 7.9.2026**
+> Primokultura:
+> 1. Staphylococcus aureus ojediněle
+> Citlivost:
+> 1. oxacilin C
 
+Nadpisy jsou tučně; tlačítko Kopírovat vloží do schránky formátovaný text
+i čistý text pro programy, které formátování neumí.
 Legenda k citlivosti se vypíše jen jednou, na konci.
 
 **Web:** https://danzavada.github.io/vfn/

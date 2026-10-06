@@ -19,9 +19,8 @@
     <div class="panes">
       <section class="pane">
         <div class="pane-head">
-          <label for="input">Nálezy z NIS</label>
+          <label for="input" class="pane-title">Nálezy z NIS</label>
           <div class="actions">
-            <button type="button" id="sample" class="btn-ghost">Ukázka</button>
             <button type="button" id="clear" class="btn-ghost">Vymazat</button>
           </div>
         </div>
@@ -31,23 +30,18 @@
 
       <section class="pane">
         <div class="pane-head">
-          <label for="output">Přeformátováno <span id="count" class="muted"></span></label>
+          <span class="pane-title" id="output-label">Přeformátováno <span id="count" class="muted"></span></span>
           <div class="actions">
             <button type="button" id="copy" class="btn-primary" disabled>Kopírovat</button>
           </div>
         </div>
         <div id="warnings" class="warnings" hidden></div>
-        <textarea id="output" spellcheck="false" readonly
-          placeholder="Výsledek se objeví tady."></textarea>
+        <div id="output" class="output" role="region" aria-labelledby="output-label"
+          data-placeholder="Výsledek se objeví tady."></div>
       </section>
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>Výstup vždy zkontroluj s originálním nálezem.</p>
-    </div>
-  </footer>
 
   <script src="assets/formatter.js"></script>
   <script src="assets/app.js"></script>

@@ -169,7 +169,7 @@
       }
 
       // Netestované kmeny (1*) hodnoty nemají, takže když počet sedí,
-      // stačí pořadí. Pozice ve sloupcích jsou jen záloha – při kopírování
+      // stačí pořadí. Pozice ve sloupcích jsou jen záloha - při kopírování
       // se mezery často slijí a pozice pak neplatí.
       var targets;
       if (values.length === tested.length) {

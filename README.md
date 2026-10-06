@@ -1,4 +1,4 @@
-# VFN · mikrobiologie
+# VFN · mikrobiologie do propouštěček
 
 Webová aplikace, která převádí mikrobiologické nálezy zkopírované z NIS VFN
 do stručného textu, např.:
@@ -19,13 +19,13 @@ Text se zpracovává jen v prohlížeči a nikam se neodesílá.
 
 ## Struktura
 
-- `index.html` – stránka
-- `assets/formatter.js` – parser a formátování (bez závislosti na prohlížeči)
-- `assets/app.js` – ovládání stránky
-- `samples/priklad.txt` – anonymizovaná ukázka nálezů
-- `tests/` – testy formátovače
+- `index.html` - stránka
+- `assets/formatter.js` - parser a formátování (bez závislosti na prohlížeči)
+- `assets/app.js` - ovládání stránky
+- `samples/priklad.txt` - anonymizovaná ukázka nálezů
+- `tests/` - testy formátovače
 
-Skutečné nálezy ukládej jen jako `samples/original*.txt` – tyto soubory jsou
+Skutečné nálezy ukládej jen jako `samples/original*.txt` - tyto soubory jsou
 v `.gitignore` a do repozitáře se nedostanou. **Repozitář je veřejný.**
 
 Názvy materiálů, které se nemají jen převést na malá písmena (např.

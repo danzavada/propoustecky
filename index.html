@@ -32,6 +32,19 @@
         <div class="pane-head">
           <span class="pane-title" id="output-label">Přeformátováno <span id="count" class="muted"></span></span>
           <div class="actions">
+            <select id="font" aria-label="Písmo výstupu">
+              <option value="arial">Arial CE</option>
+              <option value="calibri">Calibri</option>
+              <option value="times">Times New Roman</option>
+            </select>
+            <select id="size" aria-label="Velikost písma výstupu">
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+            </select>
             <button type="button" id="copy" class="btn-primary" disabled>Kopírovat</button>
           </div>
         </div>
@@ -42,6 +55,11 @@
     </div>
   </main>
 
+  <footer class="site-footer">
+    <div class="container">
+      <p>Vytvořeno z frustrace. Daniel Závada 2026</p>
+    </div>
+  </footer>
 
   <script src="assets/formatter.js"></script>
   <script src="assets/app.js"></script>

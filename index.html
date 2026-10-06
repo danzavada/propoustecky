@@ -3,27 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VFN</title>
+  <title>VFN – mikrobiologie</title>
+  <meta name="description" content="Převod mikrobiologických nálezů z NIS VFN do stručného textu.">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="logo" href="./">VFN</a>
+    <div class="container header-row">
+      <a class="logo" href="./">VFN · mikrobiologie</a>
+      <span class="privacy">Text se zpracovává jen v tomto prohlížeči a nikam se neodesílá.</span>
     </div>
   </header>
 
   <main class="container">
-    <h1>VFN</h1>
-    <p>Stránka se připravuje.</p>
+    <div class="panes">
+      <section class="pane">
+        <div class="pane-head">
+          <label for="input">Nálezy z NIS</label>
+          <div class="actions">
+            <button type="button" id="sample" class="btn-ghost">Ukázka</button>
+            <button type="button" id="clear" class="btn-ghost">Vymazat</button>
+          </div>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off"
+          placeholder="Sem vlož text nálezů zkopírovaný ze systému…"></textarea>
+      </section>
+
+      <section class="pane">
+        <div class="pane-head">
+          <label for="output">Přeformátováno <span id="count" class="muted"></span></label>
+          <div class="actions">
+            <button type="button" id="copy" class="btn-primary" disabled>Kopírovat</button>
+          </div>
+        </div>
+        <div id="warnings" class="warnings" hidden></div>
+        <textarea id="output" spellcheck="false" readonly
+          placeholder="Výsledek se objeví tady."></textarea>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; <span id="year"></span> VFN</p>
+      <p>Výstup vždy zkontroluj s originálním nálezem.</p>
     </div>
   </footer>
 
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="assets/formatter.js"></script>
+  <script src="assets/app.js"></script>
 </body>
 </html>

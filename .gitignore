@@ -1,1 +1,4 @@
 .DS_Store
+
+# Skutečné nálezy pacientů – nikdy necommitovat
+samples/original*.txt

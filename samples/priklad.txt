@@ -1,0 +1,239 @@
+Nálezy:
+      REP_MRUT_DTP:
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   MOČ Z PERMAN.KATETRU
+Laboratorní číslo     C0900801                                 Dg.         E875
+Zdravotnické zařízení VFN                                      NS          20541
+Oddělení              Nefrologická klinika - OAM - JIP
+Lékař                 1494                                     IČP/odb.    02004004  / 1T1
+Datum a doba příjmu   07.09.2026 14:00
+Datum a doba odběru   07.09.2026 12:00
+Datum a doba ukončení 08.09.2026 08:01
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ negativní
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   KRK-VÝTĚR
+Laboratorní číslo     C0900802                                 Dg.         E875
+Zdravotnické zařízení VFN                                      NS          20541
+Oddělení              Nefrologická klinika - OAM - JIP
+Lékař                 1494                                     IČP/odb.    02004004  / 1T1
+Datum a doba příjmu   07.09.2026 14:00
+Datum a doba odběru   07.09.2026 12:00
+Datum a doba ukončení 09.09.2026 07:59
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ Běžná flóra horních cest dýchacích
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   NOS-VÝTĚR
+Laboratorní číslo     C0900803                                 Dg.         E875
+Zdravotnické zařízení VFN                                      NS          20541
+Oddělení              Nefrologická klinika - OAM - JIP
+Lékař                 1494                                     IČP/odb.    02004004  / 1T1
+Datum a doba příjmu   07.09.2026 14:00
+Datum a doba odběru   07.09.2026 12:00
+Datum a doba ukončení 09.09.2026 07:59
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ 1.Staphylococcus aureus                 ojediněle
+----------------------------------------------------------------------------------------------
+CITLIVOST - diskový difuzní test / MIC
+------------------------------
+ Účinná látka                1
+------------------------------
+ oxacilin                    C
+----------------------------------------------------------------------------------------------
+LEGENDA: C-citlivý, R-resistentní, I-hraničně citlivý, X-výsledek k dispozici po konzultaci
+         *-test citlivosti nebyl proveden, N-bez interpretace, Q-prípravek lze použít za
+         zvýšené expozice, vhodná konzultace ATB centra
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   STOLICE VÝTĚR Z REKTA
+Laboratorní číslo     C0900804                                 Dg.         E875
+Zdravotnické zařízení VFN                                      NS          20541
+Oddělení              Nefrologická klinika - OAM - JIP
+Lékař                 1494                                     IČP/odb.    02004004  / 1T1
+Datum a doba příjmu   07.09.2026 14:00
+Datum a doba odběru   07.09.2026 12:00
+Datum a doba ukončení 09.09.2026 07:59
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ Běžná střevní flóra
+
+Pomnožení
+ viz primokultura
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   MOČ Z PERMAN.KATETRU
+Laboratorní číslo     C0902253                                 Dg.         I500
+Zdravotnické zařízení VFN                                      NS          20337
+Oddělení              III. Interní klinika - Lůž. oddělení C
+Lékař                 -                                        IČP/odb.    02004030  / 1F1
+Datum a doba příjmu   17.09.2026 12:00
+Datum a doba odběru   17.09.2026
+Datum a doba ukončení 18.09.2026 07:56
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ negativní
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   PERMANENTNÍ MOČOVÝ KATETR
+Laboratorní číslo     C0902254                                 Dg.         I500
+Zdravotnické zařízení VFN                                      NS          20337
+Oddělení              III. Interní klinika - Lůž. oddělení C
+Lékař                 -                                        IČP/odb.    02004030  / 1F1
+Datum a doba příjmu   17.09.2026 12:00
+Datum a doba odběru   17.09.2026
+Datum a doba ukončení 20.09.2026 12:58
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ 1.Staphylococcus epidermidis            ojediněle
+ 2.Enterococcus faecalis                 ojediněle
+
+Pomnožení
+ 3.Proteus hauseri
+----------------------------------------------------------------------------------------------
+CITLIVOST - diskový difuzní test / MIC
+--------------------------------------
+ Účinná látka               1*  2*   3
+--------------------------------------
+ amoxicilin klavulanát               C
+ amikacin                            C
+ ampicilin                           R
+ ciprofloxacin                       C
+ kotrimoxazol                        C
+ cefuroxim                           R
+ furantoin                           R
+ gentamicin                          C
+ pivmecilinam                        R
+----------------------------------------------------------------------------------------------
+LEGENDA: C-citlivý, R-resistentní, I-hraničně citlivý, X-výsledek k dispozici po konzultaci
+         *-test citlivosti nebyl proveden, N-bez interpretace, Q-prípravek lze použít za
+         zvýšené expozice, vhodná konzultace ATB centra
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   STĚR PENIS
+Laboratorní číslo     C0902255                                 Dg.         I500
+Zdravotnické zařízení VFN                                      NS          20337
+Oddělení              III. Interní klinika - Lůž. oddělení C
+Lékař                 -                                        IČP/odb.    02004030  / 1F1
+Datum a doba příjmu   17.09.2026 12:00
+Datum a doba odběru   17.09.2026
+Datum a doba ukončení 19.09.2026 09:52
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ 1.Staphylococcus koagulázanegativní     ojediněle
+ 2.Enterococcus faecalis                 ojediněle
+
+Pomnožení
+ 3.Staphylococcus aureus
+----------------------------------------------------------------------------------------------
+CITLIVOST - diskový difuzní test / MIC
+--------------------------------------
+ Účinná látka               1*  2*   3
+--------------------------------------
+ klindamycin                         C
+ kotrimoxazol                        C
+ erytromycin                         C
+ gentamicin                          C
+ oxacilin                            C
+ tetracyklin                         C
+----------------------------------------------------------------------------------------------
+LEGENDA: C-citlivý, R-resistentní, I-hraničně citlivý, X-výsledek k dispozici po konzultaci
+         *-test citlivosti nebyl proveden, N-bez interpretace, Q-prípravek lze použít za
+         zvýšené expozice, vhodná konzultace ATB centra
+
+UVOLNIL:  MUDr. XY
+
+
+Laboratoř bakteriologie, tel.224967664,7724
+----------------------------------------------------------------------------------------------
+Pacient               TEST PACIENT                             Rodné číslo 000000000  Poj. 111
+
+Biologický materiál   URETRA
+Laboratorní číslo     C0902456                                 Dg.         I50
+Zdravotnické zařízení VFN                                      NS          20337
+Oddělení              III. Interní klinika - Lůž. oddělení C
+Lékař                 XY                                       IČP/odb.    02004030  / 1F1
+Datum a doba příjmu   19.09.2026 13:00
+Datum a doba odběru   19.09.2026 10:30
+Datum a doba ukončení 21.09.2026 07:30
+----------------------------------------------------------------------------------------------
+KULTIVACE A VYŠETŘENÍ
+Primokultura
+ 1.Citrobacter koseri, širokospektrá betalaktamáza negativní ojediněle
+ 2.Proteus hauseri, širokospektrá betalaktamáza negativní ojediněle
+
+Pomnožení
+ viz primokultura
+----------------------------------------------------------------------------------------------
+CITLIVOST - diskový difuzní test / MIC
+----------------------------------
+ Účinná látka                1   2
+----------------------------------
+ amoxicilin klavulanát       R   C
+ amikacin                    C   C
+ ampicilin                   R   R
+ ciprofloxacin               C   C
+ kotrimoxazol                C   C
+ cefuroxim                   R   R
+ ceftazidim                  C   C
+ ertapenem                   C   C
+ furantoin                   R   R
+ gentamicin                  C   C
+ pivmecilinam                C   R
+----------------------------------------------------------------------------------------------
+LEGENDA: C-citlivý, R-resistentní, I-hraničně citlivý, X-výsledek k dispozici po konzultaci
+         *-test citlivosti nebyl proveden, N-bez interpretace, Q-prípravek lze použít za
+         zvýšené expozice, vhodná konzultace ATB centra
+
+UVOLNIL:  MUDr. XY

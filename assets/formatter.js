@@ -316,5 +316,5 @@
 
   var api = { convert: convert, parseReport: parseReport, splitReports: splitReports };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
-  else root.VfnFormatter = api;
+  else root.PropousteckyFormatter = api;
 })(this);

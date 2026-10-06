@@ -58,7 +58,7 @@
   }
 
   function render() {
-    current = VfnFormatter.convert(input.value);
+    current = PropousteckyFormatter.convert(input.value);
     output.innerHTML = toHtml(current);
     copyBtn.disabled = !current.text;
 
@@ -118,12 +118,12 @@
     }
   });
 
-  fontSelect.value = load('vfn.font', DEFAULT_FONT, function (v) { return FONTS.hasOwnProperty(v); });
-  sizeSelect.value = load('vfn.size', DEFAULT_SIZE, function (v) {
+  fontSelect.value = load('propoustecky.font', DEFAULT_FONT, function (v) { return FONTS.hasOwnProperty(v); });
+  sizeSelect.value = load('propoustecky.size', DEFAULT_SIZE, function (v) {
     return Array.prototype.some.call(sizeSelect.options, function (o) { return o.value === v; });
   });
-  fontSelect.addEventListener('change', function () { save('vfn.font', fontSelect.value); applyFont(); });
-  sizeSelect.addEventListener('change', function () { save('vfn.size', sizeSelect.value); applyFont(); });
+  fontSelect.addEventListener('change', function () { save('propoustecky.font', fontSelect.value); applyFont(); });
+  sizeSelect.addEventListener('change', function () { save('propoustecky.size', sizeSelect.value); applyFont(); });
   applyFont();
 
   render();

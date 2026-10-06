@@ -1,4 +1,4 @@
-# VFN · mikrobiologie do propouštěček
+# Propouštěčky - Zkracovač zpráv z mikrobiologie VFN
 
 Webová aplikace, která převádí mikrobiologické nálezy zkopírované z NIS VFN
 do stručného textu, např.:
@@ -13,7 +13,7 @@ Nadpisy jsou tučně; tlačítko Kopírovat vloží do schránky formátovaný t
 i čistý text pro programy, které formátování neumí.
 Legenda k citlivosti se vypíše jen jednou, na konci.
 
-**Web:** https://danzavada.github.io/vfn/
+**Web:** https://danzavada.github.io/propoustecky/
 
 Text se zpracovává jen v prohlížeči a nikam se neodesílá.
 

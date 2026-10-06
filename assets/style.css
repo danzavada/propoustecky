@@ -74,7 +74,6 @@ body {
 /* Název v hranatém rámečku. */
 .logo-name { font-weight: 700; padding: 1px 8px; border: 2px solid var(--fg); }
 .logo-sub { font-weight: 600; }
-.privacy { color: var(--muted); font-size: 0.85rem; }
 .muted { color: var(--muted); font-weight: 400; }
 
 /* Okna končí kousek nad spodním okrajem stránky. */

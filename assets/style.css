@@ -57,12 +57,24 @@ body {
 .header-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 4px 16px;
 }
 
-.logo { font-weight: 700; font-size: 1.15rem; color: var(--fg); text-decoration: none; }
+.logo {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 1.15rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+.logo-icon { display: block; width: 32px; height: 32px; image-rendering: pixelated; }
+/* Název v hranatém rámečku, ladí s pixelovou ikonou. */
+.logo-name { font-weight: 700; padding: 1px 8px; border: 2px solid var(--fg); }
+.logo-sub { font-weight: 600; }
 .privacy { color: var(--muted); font-size: 0.85rem; }
 .muted { color: var(--muted); font-weight: 400; }
 

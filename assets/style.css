@@ -11,7 +11,7 @@
   --warn-border: #f0c36d;
   --mark: rgba(22, 163, 74, 0.28);
   /* Písmo výstupu, mění ho výběr nad oknem (assets/app.js). */
-  --doc-font: "Arial CE", Arial, Helvetica, sans-serif;
+  --doc-font: Calibri, Carlito, "Segoe UI", sans-serif;
   --doc-size: 10pt;
 }
 

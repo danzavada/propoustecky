@@ -10,7 +10,7 @@
   var sizeSelect = document.getElementById('size');
   var current = null;
 
-  var FONT = '"Arial CE", Arial, Helvetica, sans-serif';
+  var FONT = 'Calibri, Carlito, "Segoe UI", sans-serif';
   var DEFAULT_SIZE = '10';
 
   // Velikost písma se pamatuje jen v tomto prohlížeči; bez úložiště platí výchozí.

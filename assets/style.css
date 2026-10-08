@@ -9,6 +9,7 @@
   --warn-bg: #fff4e0;
   --warn-fg: #7a4b00;
   --warn-border: #f0c36d;
+  --mark: rgba(22, 163, 74, 0.28);
   /* Písmo výstupu, mění ho výběr nad oknem (assets/app.js). */
   --doc-font: "Arial CE", Arial, Helvetica, sans-serif;
   --doc-size: 10pt;
@@ -26,6 +27,7 @@
     --warn-bg: #3a2c10;
     --warn-fg: #f5d48e;
     --warn-border: #6b5220;
+    --mark: rgba(74, 222, 128, 0.28);
   }
 }
 
@@ -101,23 +103,57 @@ main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 20px; m
 .pane-title { font-weight: 600; line-height: 1; }
 .actions { display: flex; align-items: center; gap: 8px; }
 
-textarea,
+.editor,
 .output {
   flex: 1;
   width: 100%;
   min-height: 0;
-  resize: none;
-  padding: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
   color: var(--fg);
+}
+
+#input,
+.highlights,
+.output {
+  padding: 12px;
   font-family: var(--doc-font);
   font-size: var(--doc-size);
   line-height: 1.5;
 }
 
-#input { white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+/* Pole je průhledné a pod ním leží stejný text se zeleně podbarvenými
+   úseky, které se převzaly do výsledku. Obojí musí mít stejné písmo i odsazení. */
+.editor { position: relative; overflow: hidden; }
+.editor:focus-within { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+.highlights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  white-space: pre;
+  color: transparent;
+  pointer-events: none;
+}
+.highlights mark { background: var(--mark); color: transparent; border-radius: 2px; }
+
+#input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow: auto;
+}
 .output {
   overflow-y: auto;
   user-select: text;
@@ -125,8 +161,6 @@ textarea,
 .output p { margin: 0 0 1em; }
 .output p:last-child { margin-bottom: 0; }
 .output:empty::before { content: attr(data-placeholder); color: var(--muted); }
-
-textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
 
 button {
   display: inline-flex;
@@ -197,5 +231,5 @@ select option { background: var(--bg); color: var(--fg); }
   main.container { padding-bottom: 16px; }
   .pane-head { height: auto; min-height: 64px; flex-wrap: wrap; padding: 8px 0; }
   .panes { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
-  textarea, .output { flex: none; height: 50vh; }
+  .editor, .output { flex: none; height: 50vh; }
 }

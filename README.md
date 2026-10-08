@@ -12,6 +12,8 @@ do stručného textu, např.:
 Nadpisy jsou tučně; tlačítko Kopírovat vloží do schránky formátovaný text
 i čistý text pro programy, které formátování neumí.
 Legenda k citlivosti se vypíše jen jednou, na konci.
+Ve vloženém textu se zeleně podbarví vše, co se převzalo do výsledku
+(materiál, datum odběru, kmeny, citlivost, legenda).
 
 **Web:** https://danzavada.github.io/propoustecky/
 
@@ -30,6 +32,8 @@ v `.gitignore` a do repozitáře se nedostanou. **Repozitář je veřejný.**
 
 Názvy materiálů, které se nemají jen převést na malá písmena (např.
 `KRK-VÝTĚR` → „Výtěr z krku“), se doplňují do `MATERIALS` v `assets/formatter.js`.
+Zkratky, které mají zůstat velkými písmeny (PDK, LDK, DK, CVK, BAL, …),
+jsou v `ABBREVIATIONS` tamtéž.
 
 ## Lokální náhled
 

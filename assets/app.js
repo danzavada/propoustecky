@@ -2,6 +2,7 @@
   'use strict';
 
   var input = document.getElementById('input');
+  var highlights = document.getElementById('highlights');
   var output = document.getElementById('output');
   var count = document.getElementById('count');
   var warnings = document.getElementById('warnings');
@@ -57,8 +58,26 @@
     return parts.join('');
   }
 
+  // Pod průhledným polem leží kopie vstupu, ve které jsou zeleně
+  // podbarvené úseky převzaté do výsledku (datum, materiál, kmeny, …).
+  function renderHighlights(text, marks) {
+    var html = '';
+    var pos = 0;
+    marks.forEach(function (m) {
+      html += escapeHtml(text.slice(pos, m[0])) + '<mark>' + escapeHtml(text.slice(m[0], m[1])) + '</mark>';
+      pos = m[1];
+    });
+    highlights.innerHTML = html + escapeHtml(text.slice(pos));
+    syncScroll();
+  }
+
+  function syncScroll() {
+    highlights.style.transform = 'translate(' + -input.scrollLeft + 'px, ' + -input.scrollTop + 'px)';
+  }
+
   function render() {
     current = PropousteckyFormatter.convert(input.value);
+    renderHighlights(input.value, current.marks);
     output.innerHTML = toHtml(current);
     copyBtn.disabled = !current.text;
 
@@ -82,6 +101,7 @@
   }
 
   input.addEventListener('input', render);
+  input.addEventListener('scroll', syncScroll);
 
   document.getElementById('clear').addEventListener('click', function () {
     input.value = '';

@@ -69,5 +69,39 @@ test('chybějící hodnota v tabulce: podle pozice, se slitými mezerami varová
 });
 
 test('prázdný vstup', () => {
-  assert.deepStrictEqual(convert(''), { blocks: [], legend: '', text: '', count: 0, warnings: [] });
+  assert.deepStrictEqual(convert(''), { blocks: [], legend: '', text: '', count: 0, warnings: [], marks: [] });
+});
+
+test('zkratky v názvu materiálu zůstanou velkými písmeny', () => {
+  const title = (material) =>
+    paragraphs(sample.replace('MOČ Z PERMAN.KATETRU', material))[0].split('\n')[0];
+  assert.strictEqual(title('STĚR Z RÁNY PDK'), 'Stěr z rány PDK - kultivace 7.9.2026');
+  assert.strictEqual(title('STĚR Z RÁNY LDK A DK'), 'Stěr z rány LDK a DK - kultivace 7.9.2026');
+  assert.strictEqual(title('KONEC CVK'), 'Konec CVK - kultivace 7.9.2026');
+  assert.strictEqual(title('BAL'), 'BAL - kultivace 7.9.2026');
+  assert.strictEqual(title('MOČ Z PMK'), 'Moč z PMK - kultivace 7.9.2026');
+});
+
+const marked = (text) => convert(text).marks.map(([a, b]) => text.slice(a, b));
+
+test('zvýrazní převzaté části vstupu', () => {
+  const m = marked(sample);
+  assert.ok(m.includes('MOČ Z PERMAN.KATETRU'));
+  assert.ok(m.includes('07.09.2026'));
+  assert.ok(m.includes('17.09.2026'));
+  assert.ok(m.includes('Primokultura'));
+  assert.ok(m.includes('negativní'));
+  assert.ok(m.includes('1.Staphylococcus aureus                 ojediněle'));
+  assert.ok(m.includes('oxacilin'));
+  assert.ok(m.includes('C'));
+  assert.ok(m.some((x) => x.startsWith('LEGENDA: C-citlivý')));
+  // datum odběru, ne příjmu ani ukončení; netestované kmeny ani hlavička ne
+  assert.ok(!m.some((x) => /14:00|08:01|Laboratorní|Účinná látka|UVOLNIL|viz primokultur/i.test(x)));
+  // legenda jen jednou
+  assert.strictEqual(m.filter((x) => x.startsWith('LEGENDA')).length, 1);
+});
+
+test('zvýraznění sedí i s konci řádků CRLF', () => {
+  const crlf = sample.replace(/\n/g, '\r\n');
+  assert.deepStrictEqual(marked(crlf), marked(sample));
 });

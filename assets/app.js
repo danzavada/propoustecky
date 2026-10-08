@@ -7,19 +7,13 @@
   var count = document.getElementById('count');
   var warnings = document.getElementById('warnings');
   var copyBtn = document.getElementById('copy');
-  var fontSelect = document.getElementById('font');
   var sizeSelect = document.getElementById('size');
   var current = null;
 
-  var FONTS = {
-    arial: '"Arial CE", Arial, Helvetica, sans-serif',
-    calibri: 'Calibri, Carlito, "Segoe UI", sans-serif',
-    times: '"Times New Roman", Times, serif'
-  };
-  var DEFAULT_FONT = 'arial';
+  var FONT = '"Arial CE", Arial, Helvetica, sans-serif';
   var DEFAULT_SIZE = '10';
 
-  // Volba písma se pamatuje jen v tomto prohlížeči; bez úložiště platí výchozí.
+  // Velikost písma se pamatuje jen v tomto prohlížeči; bez úložiště platí výchozí.
   function load(key, fallback, allowed) {
     try {
       var v = localStorage.getItem(key);
@@ -31,12 +25,11 @@
   }
 
   function docStyle() {
-    return 'font-family:' + FONTS[fontSelect.value] + ';font-size:' + sizeSelect.value + 'pt';
+    return 'font-family:' + FONT + ';font-size:' + sizeSelect.value + 'pt';
   }
 
-  function applyFont() {
+  function applySize() {
     var rootStyle = document.documentElement.style;
-    rootStyle.setProperty('--doc-font', FONTS[fontSelect.value]);
     rootStyle.setProperty('--doc-size', sizeSelect.value + 'pt');
   }
 
@@ -138,13 +131,11 @@
     }
   });
 
-  fontSelect.value = load('propoustecky.font', DEFAULT_FONT, function (v) { return FONTS.hasOwnProperty(v); });
   sizeSelect.value = load('propoustecky.size', DEFAULT_SIZE, function (v) {
     return Array.prototype.some.call(sizeSelect.options, function (o) { return o.value === v; });
   });
-  fontSelect.addEventListener('change', function () { save('propoustecky.font', fontSelect.value); applyFont(); });
-  sizeSelect.addEventListener('change', function () { save('propoustecky.size', sizeSelect.value); applyFont(); });
-  applyFont();
+  sizeSelect.addEventListener('change', function () { save('propoustecky.size', sizeSelect.value); applySize(); });
+  applySize();
 
   render();
 })();

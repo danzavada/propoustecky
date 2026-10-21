@@ -79,9 +79,33 @@ test('ostatní řádky zůstanou beze změny', () => {
   assert.strictEqual(convert(text, 'ward').count, 0);
 });
 
-test('v daném směru převede jen druhý zápis', () => {
-  assert.strictEqual(toWard('A 0-0; 1-\nB 1-0-0'), 'A 0-0; 1-\nB 0-0-;1-');
-  assert.strictEqual(toClassic('A 0-0; 1-\nB 1-0-0'), 'A 1-0-0\nB 1-0-0');
+test('vše se sjednotí do zvoleného zápisu', () => {
+  assert.strictEqual(toWard('A 0-0; 1-\nB 1-0-0\nC 0-0, 1/2-\nD 0-0-;1-'),
+    'A 0-0-;1-\nB 0-0-;1-\nC 0-0-;1/2-\nD 0-0-;1-');
+  assert.strictEqual(toClassic('A 0-0; 1-\nB 1 - 0 - 0'), 'A 1-0-0\nB 1-0-0');
+  const r = convert('A 0-0; 1-\nB 1-0-0\nD 0-0-;1-', 'ward');
+  assert.strictEqual(r.count, 2);
+  assert.strictEqual(r.marks.length, 3);
+});
+
+test('pomlčky s mezerami a zlomky ½', () => {
+  assert.strictEqual(toWard('Concor 5mg 1 - 0 - 1\nVerospiron 25mg ½-0-0\nBisoprolol 1½ -0- 0'),
+    'Concor 5mg 0-1-;1-\nVerospiron 25mg 0-0-;½-\nBisoprolol 0-0-;1½-');
+  assert.strictEqual(toClassic('Verospiron 25mg ½ - 0 ; 0 -'), 'Verospiron 25mg 0-½-0');
+});
+
+test('srovná mezery a tabulátory', () => {
+  assert.strictEqual(toWard('  Xarelto  20mg\t1-0-0 , Entresto 24/26   1-0-1  '),
+    'Xarelto 20mg 0-0-;1-\nEntresto 24/26 0-1-;1-');
+});
+
+test('upozorní na dávkování, které nešlo převést', () => {
+  const r = convert('Concor 5mg 1 tbl-0-0\nHelicid 0-0\nForxiga 1-0-0\nEliquis 5mg v 20-;08- hod.', 'ward');
+  assert.deepStrictEqual(r.warnings, [
+    'Zkontroluj dávkování, nešlo převést: Concor 5mg 1 tbl-0-0',
+    'Zkontroluj dávkování, nešlo převést: Helicid 0-0'
+  ]);
+  assert.deepStrictEqual(convert('Xarelto 1-0-0, Concor 0-0; 1-', 'classic').warnings, []);
 });
 
 test('odhad směru podle převažujícího zápisu', () => {

@@ -6,19 +6,25 @@
 (function (root) {
   'use strict';
 
-  // Jedna dávka: 1, 0, 1/2, 1,5, 1/3 …
-  var DOSE = '\\d+(?:,\\d+)?(?:\\/\\d+)?';
+  // Jedna dávka: 1, 0, 1/2, 1,5, 1/3, ½, 1½ …
+  var DOSE = '\\d+(?:,\\d+)?(?:\\/\\d+)?|\\d*[½¼¾⅓]';
+  // Pomlčka mezi dávkami, i s mezerami („1 - 0 - 1“).
+  var DASH = '\\s*-\\s*';
   // Dávka nesmí navazovat na slovo, číslo, zlomek ani desetinnou čárku („7,5mg“, „24/26“).
-  var BEFORE = '(?<![\\p{L}\\d/\\-])(?<!\\d,)';
-  var AFTER = '(?![\\p{L}\\d/\\-])';
+  var BEFORE = '(?<![\\p{L}\\d/\\-½¼¾⅓])(?<!\\d,)';
+  var AFTER = '(?![\\p{L}\\d/\\-½¼¾⅓])';
+
+  function dose() { return '(' + DOSE + ')'; }
 
   // Poledne-večer(-noc); ráno: „0-0; 1-“, „0-0-;1-“, „0-0-1/3; 0-“, „0-0, 1-“.
   // Varianta s čárkou musí končit pomlčkou, jinak by šla splést s výčtem léků.
-  var WARD = new RegExp(BEFORE + '(' + DOSE + ')-(' + DOSE + ')(?:-(' + DOSE + '))?-?\\s*' +
-    '(?:;\\s*(' + DOSE + ')-?|,\\s*(' + DOSE + ')-)' + AFTER, 'gu');
+  var WARD = new RegExp(BEFORE + dose() + DASH + dose() + '(?:' + DASH + dose() + ')?(?:\\s*-)?\\s*' +
+    '(?:;\\s*' + dose() + '(?:\\s*-)?|,\\s*' + dose() + '\\s*-)' + AFTER, 'gu');
   // Ráno-poledne-večer(-noc): „1-0-0“, „1/2-0-0“, „0-0-0-1/2“.
-  var CLASSIC = new RegExp(BEFORE + '(' + DOSE + ')-(' + DOSE + ')-(' + DOSE + ')(?:-(' + DOSE + '))?' +
-    AFTER + '(?!,\\d)', 'gu');
+  var CLASSIC = new RegExp(BEFORE + dose() + DASH + dose() + DASH + dose() + '(?:' + DASH + dose() + ')?' +
+    AFTER + '(?!\\s*-\\s*(?:' + DOSE + '))(?!,\\d)', 'gu');
+  // Co po odečtení rozpoznaných dávek pořád vypadá jako dávkování („1 tbl-0-0“, „0-0“).
+  var SUSPECT = new RegExp('(?:' + DOSE + ')\\s*-\\s*(?:' + DOSE + ')', 'u');
 
   var FA = /^\s*FA:\s*/;
   var HEADER_LINE = /^\s*p\.o\.:\s*\(\s*poledne-večer,\s*ráno-?\s*\)\s*$/iu;
@@ -70,9 +76,11 @@
       if (c === '(') depth++;
       else if (c === ')') depth = Math.max(0, depth - 1);
       else if (c === ',' && !depth && !/\d/.test(line[i + 1] || '')) {
+        var begin = i;
+        while (begin > from && /\s/.test(line[begin - 1])) begin--;
         var end = i + 1;
         while (end < line.length && /\s/.test(line[end])) end++;
-        var sep = { start: i, end: end };
+        var sep = { start: begin, end: end };
         if (!overlaps(sep, doses)) seps.push(sep);
       }
     }
@@ -90,13 +98,33 @@
     return ward > classic ? 'classic' : 'ward';
   }
 
+  // Vícenásobné mezery a tabulátory → jedna mezera, okraje řádku bez mezer.
+  // Úseky, které už mění jiná úprava, se přeskočí.
+  function spaceEdits(line, edits) {
+    var found = [];
+    var re = /[ \t]+/g;
+    var m;
+    while ((m = re.exec(line))) {
+      var e = { start: m.index, end: m.index + m[0].length };
+      var edge = !e.start || e.end === line.length;
+      if (edge) e.text = '';
+      else if (m[0] !== ' ') e.text = ' ';
+      else continue;
+      if (!overlaps(e, edits)) found.push(e);
+    }
+    return found;
+  }
+
   // format je cílový zápis: 'ward' (0-0-;1-) nebo 'classic' (1-0-0).
-  // Vrací i marks (převedené úseky vstupu) a outMarks (tytéž úseky ve výstupu).
+  // Všechna rozpoznaná dávkování se přepíšou do jednoho zápisu („0-0; 1-“ → „0-0-;1-“).
+  // Vrací i marks (rozpoznané úseky vstupu), outMarks (tytéž úseky ve výstupu)
+  // a warnings (řádky, kde něco vypadá jako dávkování, ale převést nešlo).
   function convert(text, format) {
     text = text || '';
     var out = '';
     var marks = [];
     var outMarks = [];
+    var warnings = [];
     var count = 0;
     var offset = 0;
     var emitted = false;
@@ -107,10 +135,17 @@
       if (format === 'classic' && HEADER_LINE.test(line)) return;
 
       var found = findDoses(line);
-      var doses = found.filter(function (d) { return d.format !== format; });
-      var edits = doses.map(function (d) {
-        return { start: d.start, end: d.end, text: formatDoses(d.doses, format), dose: true };
+      var edits = found.map(function (d) {
+        var to = formatDoses(d.doses, format);
+        return { start: d.start, end: d.end, text: to, dose: true, changed: to !== line.slice(d.start, d.end) };
       });
+
+      var rest = found.reduce(function (acc, d) {
+        return acc.slice(0, d.start) + ' '.repeat(d.end - d.start) + acc.slice(d.end);
+      }, line);
+      if (SUSPECT.test(rest)) {
+        warnings.push('Zkontroluj dávkování, nešlo převést: ' + line.replace(/\s+/g, ' ').trim());
+      }
 
       if (format === 'ward') {
         // Řádek FA i jiný výčet léků za sebou se rozdělí na léky pod sebou.
@@ -126,6 +161,7 @@
         if (note) edits.push({ start: note.index, end: note.index + note[0].length, text: '' });
       }
 
+      edits = edits.concat(spaceEdits(line, edits));
       edits.sort(function (a, b) { return a.start - b.start; });
       if (emitted) out += '\n';
       emitted = true;
@@ -135,7 +171,7 @@
         if (e.dose) {
           marks.push([start + e.start, start + e.end]);
           outMarks.push([out.length, out.length + e.text.length]);
-          count++;
+          if (e.changed) count++;
         }
         out += e.text;
         pos = e.end;
@@ -143,7 +179,7 @@
       out += line.slice(pos);
     });
 
-    return { text: out, count: count, marks: marks, outMarks: outMarks };
+    return { text: out, count: count, marks: marks, outMarks: outMarks, warnings: warnings };
   }
 
   var api = { convert: convert, detect: detect };

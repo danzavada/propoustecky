@@ -18,7 +18,10 @@ Ve vloženém textu se zeleně podbarví vše, co se převzalo do výsledku
 Podnadpis v hlavičce je zároveň výběr nástroje. Druhý nástroj, **Převodník
 dávkování léků** (`#leky`), převádí dávkování mezi zápisem ráno-poledne-večer
 (`1-0-0`) a zápisem poledne-večer; ráno (`0-0-;1-`) a zpět. Směr se odhadne
-podle vloženého textu a jde přepnout tlačítkem. Při převodu na `0-0-;1-` se
+podle vloženého textu a jde přepnout tlačítkem. Všechna rozpoznaná dávkování
+se sjednotí do zvoleného zápisu (i `0-0; 1-`, `0-0, 1-`, `1 - 0 - 1`, `½-0-0`),
+vícenásobné mezery a tabulátory se srovnají a řádky, kde něco vypadá jako
+dávkování, ale převést to nešlo, se vypíšou jako upozornění. Při převodu na `0-0-;1-` se
 řádek `FA:` i jiný výčet léků za sebou rozdělí na léky pod sebou; při převodu
 zpět se odebere případná hlavička `p.o.: (Poledne-Večer, Ráno-)`.
 

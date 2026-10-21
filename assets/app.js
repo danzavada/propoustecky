@@ -124,9 +124,9 @@
     directionBtn.textContent = DIRECTIONS[target];
 
     if (!input.value.trim()) count.textContent = '';
-    else if (!result.count) count.textContent = '(žádné dávkování nerozpoznáno)';
+    else if (!result.marks.length) count.textContent = '(žádné dávkování nerozpoznáno)';
     else count.textContent = '(převedeno ' + result.count + ')';
-    warnings.hidden = true;
+    showWarnings(result.warnings);
   }
 
   function renderMicro() {
@@ -143,9 +143,13 @@
     else if (!result.count) count.textContent = '(žádný nález nerozpoznán)';
     else count.textContent = '(' + result.count + ' ' + plural(result.count) + ')';
 
-    warnings.hidden = !result.warnings.length;
+    showWarnings(result.warnings);
+  }
+
+  function showWarnings(list) {
+    warnings.hidden = !list.length;
     warnings.textContent = '';
-    result.warnings.forEach(function (w) {
+    list.forEach(function (w) {
       var p = document.createElement('p');
       p.textContent = w;
       warnings.appendChild(p);

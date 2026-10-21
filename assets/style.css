@@ -33,6 +33,8 @@
 
 * { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 html, body { height: 100%; }
 
 body { overflow: hidden; }
@@ -74,8 +76,18 @@ body {
   text-decoration: none;
 }
 /* Název v hranatém rámečku. */
-.logo-name { font-weight: 700; padding: 1px 8px; border: 2px solid var(--fg); }
+.logo-name { font-weight: 700; padding: 1px 8px; border: 2px solid var(--fg); color: var(--fg); text-decoration: none; }
+/* Podnadpis je zároveň výběr nástroje; vypadá jako text se šipkou. */
 .logo-sub { font-weight: 600; }
+.mode-select select.logo-sub {
+  height: auto;
+  padding: 2px 30px 2px 6px;
+  margin-left: -6px;
+  border-color: transparent;
+  font-size: inherit;
+}
+.mode-select select.logo-sub:hover { border-color: var(--border); }
+.mode-select::after { border-color: var(--fg); }
 .muted { color: var(--muted); font-weight: 400; }
 
 /* Okna končí kousek nad spodním okrajem stránky. */
@@ -160,6 +172,7 @@ main.container { flex: 1; display: flex; padding-top: 0; padding-bottom: 20px; m
 }
 .output p { margin: 0 0 1em; }
 .output p:last-child { margin-bottom: 0; }
+.output mark { background: var(--mark); color: inherit; border-radius: 2px; }
 .output:empty::before { content: attr(data-placeholder); color: var(--muted); }
 
 button {
@@ -172,6 +185,7 @@ button {
   line-height: 1;
   padding: 0 14px;
   border-radius: 6px;
+  white-space: nowrap;
   cursor: pointer;
 }
 

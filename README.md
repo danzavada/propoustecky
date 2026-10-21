@@ -15,6 +15,13 @@ Nálezy jdou rovnou pod sebe, bez prázdných řádků a bez legendy.
 Ve vloženém textu se zeleně podbarví vše, co se převzalo do výsledku
 (materiál, datum odběru, kmeny, citlivost).
 
+Podnadpis v hlavičce je zároveň výběr nástroje. Druhý nástroj, **Převodník
+dávkování léků** (`#leky`), převádí dávkování mezi zápisem ráno-poledne-večer
+(`1-0-0`) a zápisem poledne-večer; ráno (`0-0-;1-`) a zpět. Směr se odhadne
+podle vloženého textu a jde přepnout tlačítkem. Při převodu na `0-0-;1-` se
+řádek `FA:` rozdělí na léky pod sebou a nahoru se doplní
+`p.o.: (Poledne-Večer, Ráno-)`; při převodu zpět se tato hlavička odebere.
+
 **Web:** https://danzavada.github.io/propoustecky/
 
 Text se zpracovává jen v prohlížeči a nikam se neodesílá.
@@ -23,9 +30,10 @@ Text se zpracovává jen v prohlížeči a nikam se neodesílá.
 
 - `index.html` - stránka
 - `assets/formatter.js` - parser a formátování (bez závislosti na prohlížeči)
+- `assets/meds.js` - převod dávkování léků (bez závislosti na prohlížeči)
 - `assets/app.js` - ovládání stránky
 - `samples/priklad.txt` - anonymizovaná ukázka nálezů
-- `tests/` - testy formátovače
+- `tests/` - testy formátovače a převodu léků
 
 Skutečné nálezy ukládej jen jako `samples/original*.txt` - tyto soubory jsou
 v `.gitignore` a do repozitáře se nedostanou. **Repozitář je veřejný.**

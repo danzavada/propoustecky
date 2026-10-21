@@ -13,10 +13,15 @@
 <body>
   <header class="site-header">
     <div class="container header-row">
-      <a class="logo" href="./">
-        <span class="logo-name">Propouštěčky</span>
-        <span class="logo-sub">Zkracovač zpráv z mikrobiologie VFN</span>
-      </a>
+      <div class="logo">
+        <a class="logo-name" href="./">Propouštěčky</a>
+        <span class="select mode-select">
+          <select id="mode" class="logo-sub" aria-label="Nástroj">
+            <option value="micro">Zkracovač zpráv z mikrobiologie VFN</option>
+            <option value="meds">Převodník dávkování léků</option>
+          </select>
+        </span>
+      </div>
     </div>
   </header>
 
@@ -24,7 +29,7 @@
     <div class="panes">
       <section class="pane">
         <div class="pane-head">
-          <label for="input" class="pane-title">Nálezy z NIS</label>
+          <label for="input" class="pane-title" id="input-label">Nálezy z NIS</label>
           <div class="actions">
             <button type="button" id="clear" class="btn-ghost">Vymazat</button>
           </div>
@@ -38,8 +43,9 @@
 
       <section class="pane">
         <div class="pane-head">
-          <span class="pane-title" id="output-label">Přeformátováno <span id="count" class="muted"></span></span>
+          <span class="pane-title" id="output-label"><span id="output-title">Přeformátováno</span> <span id="count" class="muted"></span></span>
           <div class="actions">
+            <button type="button" id="direction" class="btn-ghost" title="Přepnout směr převodu" hidden></button>
             <span class="select">
               <select id="size" aria-label="Velikost písma výstupu">
                 <option value="8">8</option>
@@ -62,6 +68,7 @@
 
 
   <script src="assets/formatter.js"></script>
+  <script src="assets/meds.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

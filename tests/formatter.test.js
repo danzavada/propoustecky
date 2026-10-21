@@ -6,14 +6,18 @@ const path = require('node:path');
 const { convert } = require('../assets/formatter.js');
 
 const sample = fs.readFileSync(path.join(__dirname, '..', 'samples', 'priklad.txt'), 'utf8');
-const paragraphs = (text) => convert(text).text.split('\n\n');
+const paragraphs = (text) => convert(text).blocks.map((b) => [b.title].concat(b.lines).join('\n'));
 
-test('rozpozná všechny nálezy a přidá jednu legendu na konec', () => {
-  const out = paragraphs(sample);
+test('rozpozná všechny nálezy, bez legendy', () => {
   assert.strictEqual(convert(sample).count, 8);
-  assert.strictEqual(out.length, 9);
-  assert.match(out[8], /^Legenda: C-citlivý, R-resistentní/);
-  assert.strictEqual(out.filter((p) => p.startsWith('Legenda')).length, 1);
+  assert.strictEqual(paragraphs(sample).length, 8);
+  assert.doesNotMatch(convert(sample).text, /legenda|C-citlivý/i);
+});
+
+test('nálezy rovnou pod sebou, bez prázdných řádků', () => {
+  const text = convert(sample).text;
+  assert.doesNotMatch(text, /\n\s*\n/);
+  assert.strictEqual(text, paragraphs(sample).join('\n'));
 });
 
 test('negativní kultivace', () => {
@@ -69,7 +73,7 @@ test('chybějící hodnota v tabulce: podle pozice, se slitými mezerami varová
 });
 
 test('prázdný vstup', () => {
-  assert.deepStrictEqual(convert(''), { blocks: [], legend: '', text: '', count: 0, warnings: [], marks: [] });
+  assert.deepStrictEqual(convert(''), { blocks: [], text: '', count: 0, warnings: [], marks: [] });
 });
 
 test('zkratky v názvu materiálu zůstanou velkými písmeny', () => {
@@ -94,11 +98,10 @@ test('zvýrazní převzaté části vstupu', () => {
   assert.ok(m.includes('1.Staphylococcus aureus                 ojediněle'));
   assert.ok(m.includes('oxacilin'));
   assert.ok(m.includes('C'));
-  assert.ok(m.some((x) => x.startsWith('LEGENDA: C-citlivý')));
   // datum odběru, ne příjmu ani ukončení; netestované kmeny ani hlavička ne
   assert.ok(!m.some((x) => /14:00|08:01|Laboratorní|Účinná látka|UVOLNIL|viz primokultur/i.test(x)));
-  // legenda jen jednou
-  assert.strictEqual(m.filter((x) => x.startsWith('LEGENDA')).length, 1);
+  // legenda se nepřebírá
+  assert.ok(!m.some((x) => /LEGENDA|C-citlivý/.test(x)));
 });
 
 test('zvýraznění sedí i s konci řádků CRLF', () => {

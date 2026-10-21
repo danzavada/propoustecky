@@ -267,17 +267,6 @@
     return best;
   }
 
-  // Řádky legendy spojí do jednoho; nový kód („N-…“) oddělí čárkou.
-  function joinLegend(lines) {
-    return lines.reduce(function (acc, line) {
-      var l = collapse(line);
-      if (!l) return acc;
-      if (!acc) return l;
-      var sep = /^[A-Z*]-/.test(l) && !/,$/.test(acc) ? ', ' : ' ';
-      return acc + sep + l;
-    }, '');
-  }
-
   // src = { lines, offsets } ze splitReports.
   function parseReport(src) {
     var lines = src.lines;
@@ -286,8 +275,6 @@
       date: '',
       sections: [],
       sensitivity: null,
-      legend: '',
-      legendLines: [],
       src: src,
       marks: []
     };
@@ -309,15 +296,14 @@
     var mode = 'header';
     var culture = [];
     var sens = [];
-    var legend = [];
     lines.forEach(function (line, i) {
       if (/^\s*KULTIVACE A VYŠETŘENÍ/.test(line)) { mode = 'culture'; return; }
       if (/^\s*CITLIVOST\b/.test(line)) { mode = 'sensitivity'; return; }
-      if (/^\s*LEGENDA:/.test(line)) { mode = 'legend'; legend.push(i); return; }
+      // Legenda se do výsledku nepřebírá, jen se přeskočí.
+      if (/^\s*LEGENDA:/.test(line)) { mode = 'legend'; return; }
       if (/^\s*UVOLNIL:/.test(line)) { mode = 'done'; return; }
       if (mode === 'legend') {
-        if (!line.trim()) { mode = 'done'; return; }
-        legend.push(i);
+        if (!line.trim()) mode = 'done';
         return;
       }
       if (SEPARATOR.test(line)) return;
@@ -327,10 +313,6 @@
 
     report.sections = parseCulture(lines, culture);
     report.sensitivity = parseSensitivity(lines, sens);
-    report.legend = joinLegend(legend.map(function (i) {
-      return lines[i].replace(/^\s*LEGENDA:\s*/, '');
-    }));
-    report.legendLines = legend;
     return report;
   }
 
@@ -402,7 +384,7 @@
   // Vrací i marks: úseky vstupu [začátek, konec), které se dostaly do výsledku.
   function convert(text) {
     var reports = splitReports(text || '').map(parseReport);
-    if (!reports.length) return { blocks: [], legend: '', text: '', count: 0, warnings: [], marks: [] };
+    if (!reports.length) return { blocks: [], text: '', count: 0, warnings: [], marks: [] };
 
     var warnings = reports.filter(function (r) {
       return r.sensitivity && r.sensitivity.uncertain;
@@ -412,22 +394,11 @@
     });
 
     var blocks = reports.map(formatReport);
-    var legendSource = reports.filter(function (r) {
-      return r.legend && r.sensitivity && r.sensitivity.columns.some(function (c) { return c.results.length; });
-    })[0];
-    var legend = legendSource ? 'Legenda: ' + legendSource.legend : '';
-    if (legendSource) {
-      legendSource.legendLines.forEach(function (i) {
-        mark(legendSource, i, trimmedSpan(legendSource.src.lines[i]));
-      });
-    }
-
-    var paragraphs = blocks.map(function (b) { return [b.title].concat(b.lines).join('\n'); });
-    if (legend) paragraphs.push(legend);
+    // Nálezy rovnou pod sebou, bez prázdných řádků mezi nimi.
+    var lines = blocks.reduce(function (acc, b) { return acc.concat(b.title, b.lines); }, []);
     return {
       blocks: blocks,
-      legend: legend,
-      text: paragraphs.join('\n\n'),
+      text: lines.join('\n'),
       count: reports.length,
       warnings: warnings,
       marks: mergeRanges(reports.reduce(function (acc, r) { return acc.concat(r.marks); }, []))

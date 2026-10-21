@@ -11,9 +11,9 @@ do stručného textu, např.:
 
 Nadpisy jsou tučně; tlačítko Kopírovat vloží do schránky formátovaný text
 i čistý text pro programy, které formátování neumí.
-Legenda k citlivosti se vypíše jen jednou, na konci.
+Nálezy jdou rovnou pod sebe, bez prázdných řádků a bez legendy.
 Ve vloženém textu se zeleně podbarví vše, co se převzalo do výsledku
-(materiál, datum odběru, kmeny, citlivost, legenda).
+(materiál, datum odběru, kmeny, citlivost).
 
 **Web:** https://danzavada.github.io/propoustecky/
 

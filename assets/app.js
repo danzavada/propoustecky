@@ -43,12 +43,11 @@
   // dostane každý odstavec i písmo, aby ho Word a spol. převzaly.
   function toHtml(result, style) {
     var open = style ? '<p style="' + escapeHtml(style) + '">' : '<p>';
-    var parts = result.blocks.map(function (b) {
-      return open + '<b>' + escapeHtml(b.title) + '</b><br>' +
-        b.lines.map(escapeHtml).join('<br>') + '</p>';
+    if (!result.blocks.length) return '';
+    var lines = result.blocks.map(function (b) {
+      return ['<b>' + escapeHtml(b.title) + '</b>'].concat(b.lines.map(escapeHtml)).join('<br>');
     });
-    if (result.legend) parts.push(open + escapeHtml(result.legend) + '</p>');
-    return parts.join('');
+    return open + lines.join('<br>') + '</p>';
   }
 
   // Pod průhledným polem leží kopie vstupu, ve které jsou zeleně

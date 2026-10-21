@@ -19,8 +19,8 @@ Podnadpis v hlavičce je zároveň výběr nástroje. Druhý nástroj, **Převod
 dávkování léků** (`#leky`), převádí dávkování mezi zápisem ráno-poledne-večer
 (`1-0-0`) a zápisem poledne-večer; ráno (`0-0-;1-`) a zpět. Směr se odhadne
 podle vloženého textu a jde přepnout tlačítkem. Při převodu na `0-0-;1-` se
-řádek `FA:` rozdělí na léky pod sebou a nahoru se doplní
-`p.o.: (Poledne-Večer, Ráno-)`; při převodu zpět se tato hlavička odebere.
+řádek `FA:` i jiný výčet léků za sebou rozdělí na léky pod sebou; při převodu
+zpět se odebere případná hlavička `p.o.: (Poledne-Večer, Ráno-)`.
 
 **Web:** https://danzavada.github.io/propoustecky/
 

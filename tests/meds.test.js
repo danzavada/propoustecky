@@ -1,29 +1,41 @@
 // Spuštění: node --test
 const test = require('node:test');
 const assert = require('node:assert');
-const { convert, detect, HEADER } = require('../assets/meds.js');
+const { convert, detect } = require('../assets/meds.js');
 
 const toWard = (text) => convert(text, 'ward').text;
 const toClassic = (text) => convert(text, 'classic').text;
 
-test('ráno-poledne-večer → poledne-večer; ráno, s hlavičkou', () => {
+test('ráno-poledne-večer → poledne-večer; ráno, bez hlavičky', () => {
   assert.strictEqual(toWard('Concor 5mg tbl 1-0-1\nForxiga 10mg tbl 1/2-0-0'),
-    HEADER + '\nConcor 5mg tbl 0-1-;1-\nForxiga 10mg tbl 0-0-;1/2-');
+    'Concor 5mg tbl 0-1-;1-\nForxiga 10mg tbl 0-0-;1/2-');
 });
 
 test('dávka na noc a desetinná čísla', () => {
-  assert.deepStrictEqual(toWard('Midazolam 7,5mg 0-0-0-1/2\nBisoprolol 5mg 1,5-0-0').split('\n').slice(1),
+  assert.deepStrictEqual(toWard('Midazolam 7,5mg 0-0-0-1/2\nBisoprolol 5mg 1,5-0-0').split('\n'),
     ['Midazolam 7,5mg 0-0-1/2-;0-', 'Bisoprolol 5mg 0-0-;1,5-']);
 });
 
 test('řádek FA se rozdělí na léky pod sebou', () => {
   assert.strictEqual(
     toWard('FA:  Digoxin 0,125 mg tbl 1-0-0, Januvia 0-1-0, Warfarin 1-0-0 (vysazen 10.8., znovu 13.8.), Vigantol 4 kapky denně'),
-    [HEADER, 'Digoxin 0,125 mg tbl 0-0-;1-', 'Januvia 1-0-;0-',
+    ['Digoxin 0,125 mg tbl 0-0-;1-', 'Januvia 1-0-;0-',
       'Warfarin 0-0-;1- (vysazen 10.8., znovu 13.8.)', 'Vigantol 4 kapky denně'].join('\n'));
 });
 
-test('hlavička se nepřidá dvakrát', () => {
+test('výčet léků za sebou i bez FA se rozdělí pod sebe', () => {
+  assert.strictEqual(
+    toWard('Xarelto 15 mg tbl 1-0-0, Cipralex 20 mg tbl 1/2-0-0, Glyclada 30 mg tlb 1-0-1, Vigantol 4 kapky denně'),
+    ['Xarelto 15 mg tbl 0-0-;1-', 'Cipralex 20 mg tbl 0-0-;1/2-', 'Glyclada 30 mg tlb 0-1-;1-',
+      'Vigantol 4 kapky denně'].join('\n'));
+});
+
+test('jeden lék s čárkou v poznámce se nerozdělí', () => {
+  assert.strictEqual(toWard('Concor 5mg tbl 1-0-0, při TF < 50 vynechat'),
+    'Concor 5mg tbl 0-0-;1-, při TF < 50 vynechat');
+});
+
+test('existující hlavička p.o. zůstane, nová se nepřidá', () => {
   const text = 'p.o.: (Poledne-Večer, Ráno-)\nConcor 5mg tbl 1-0-0';
   assert.strictEqual(toWard(text), 'p.o.: (Poledne-Večer, Ráno-)\nConcor 5mg tbl 0-0-;1-');
 });
@@ -68,7 +80,7 @@ test('ostatní řádky zůstanou beze změny', () => {
 });
 
 test('v daném směru převede jen druhý zápis', () => {
-  assert.strictEqual(toWard('A 0-0; 1-\nB 1-0-0').split('\n').slice(1).join('\n'), 'A 0-0; 1-\nB 0-0-;1-');
+  assert.strictEqual(toWard('A 0-0; 1-\nB 1-0-0'), 'A 0-0; 1-\nB 0-0-;1-');
   assert.strictEqual(toClassic('A 0-0; 1-\nB 1-0-0'), 'A 1-0-0\nB 1-0-0');
 });
 

@@ -6,8 +6,6 @@
 (function (root) {
   'use strict';
 
-  var HEADER = 'p.o.: (Poledne-Večer, Ráno-)';
-
   // Jedna dávka: 1, 0, 1/2, 1,5, 1/3 …
   var DOSE = '\\d+(?:,\\d+)?(?:\\/\\d+)?';
   // Dávka nesmí navazovat na slovo, číslo, zlomek ani desetinnou čárku („7,5mg“, „24/26“).
@@ -108,17 +106,18 @@
       offset += line.length + 1;
       if (format === 'classic' && HEADER_LINE.test(line)) return;
 
-      var doses = findDoses(line).filter(function (d) { return d.format !== format; });
+      var found = findDoses(line);
+      var doses = found.filter(function (d) { return d.format !== format; });
       var edits = doses.map(function (d) {
         return { start: d.start, end: d.end, text: formatDoses(d.doses, format), dose: true };
       });
 
       if (format === 'ward') {
-        // Řádek FA se rozdělí na jednotlivé léky pod sebou.
+        // Řádek FA i jiný výčet léků za sebou se rozdělí na léky pod sebou.
         var fa = FA.exec(line);
-        if (fa) {
-          edits.push({ start: 0, end: fa[0].length, text: '' });
-          listSeparators(line, fa[0].length, doses).forEach(function (s) {
+        if (fa) edits.push({ start: 0, end: fa[0].length, text: '' });
+        if (fa || found.length > 1) {
+          listSeparators(line, fa ? fa[0].length : 0, found).forEach(function (s) {
             edits.push({ start: s.start, end: s.end, text: '\n' });
           });
         }
@@ -144,15 +143,10 @@
       out += line.slice(pos);
     });
 
-    if (format === 'ward' && count && !/poledne-večer/iu.test(text)) {
-      out = HEADER + '\n' + out;
-      outMarks = outMarks.map(function (r) { return [r[0] + HEADER.length + 1, r[1] + HEADER.length + 1]; });
-    }
-
     return { text: out, count: count, marks: marks, outMarks: outMarks };
   }
 
-  var api = { convert: convert, detect: detect, HEADER: HEADER };
+  var api = { convert: convert, detect: detect };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.PropousteckyMeds = api;
 })(this);
